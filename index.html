@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS.Cronos OT — Guía de Uso · Inventario</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:#0d6e7a; --teal2:#1a8a99; --teal3:#e6f7f9; --teal4:#b2e5eb;
+  --orange:#f97316; --red:#ef4444; --amber:#f59e0b; --green:#22c55e;
+  --slate:#0f172a; --white:#ffffff; --gray50:#f8fafc; --gray100:#f1f5f9;
+  --gray200:#e2e8f0; --gray300:#cbd5e1; --gray400:#94a3b8; --gray600:#475569; --gray800:#1e293b;
+  --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --shadow:0 4px 24px rgba(0,0,0,.08); --shadow-lg:0 12px 40px rgba(0,0,0,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--gray100);color:var(--slate);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--white);border-bottom:1px solid var(--gray200);
+  display:flex;align-items:center;gap:6px;padding:0 28px;height:54px;
+  box-shadow:0 1px 8px rgba(0,0,0,.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;margin-right:20px}
+.nav-brand-dot{width:28px;height:28px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.nav-brand-dot svg{fill:white;width:16px;height:16px}
+.nav-brand-name{font-weight:700;font-size:.85rem;color:var(--slate)}
+.nav-brand-name span{color:var(--teal)}
+.nav-pill{
+  font-size:.7rem;font-weight:600;padding:5px 13px;border-radius:20px;cursor:pointer;
+  background:transparent;border:1.5px solid var(--gray200);color:var(--gray600);
+  transition:all .18s;font-family:var(--font);white-space:nowrap;
+}
+.nav-pill:hover{border-color:var(--teal);color:var(--teal)}
+.nav-pill.active{background:var(--teal);border-color:var(--teal);color:white}
+
+/* ── SLIDES ── */
+.slide{min-height:100vh;padding:74px 60px 72px;display:none;flex-direction:column;justify-content:center;animation:fadeIn .35s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── SLIDE HEADER ── */
+.s-tag{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.s-title{font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;color:var(--slate);margin-bottom:8px;line-height:1.15}
+.s-sub{font-size:.95rem;color:var(--gray600);margin-bottom:36px;line-height:1.6;max-width:680px}
+
+/* ── HERO ── */
+.hero-bg{background:linear-gradient(135deg,var(--teal) 0%,#0a5460 100%);color:white}
+.hero-bg .s-tag{color:rgba(255,255,255,.6)}
+.hero-bg .s-title{color:white}
+.hero-bg .s-sub{color:rgba(255,255,255,.75)}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.hero-pill{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:white;padding:6px 16px;border-radius:20px;font-size:.78rem;font-weight:500;
+}
+.hero-screen{
+  position:absolute;right:60px;top:50%;transform:translateY(-50%);
+  width:440px;background:var(--white);border-radius:16px;box-shadow:var(--shadow-lg);
+  overflow:hidden;opacity:.92;
+}
+.hs-bar{background:var(--teal);padding:10px 16px;display:flex;align-items:center;gap:8px}
+.hs-bar-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4)}
+.hs-bar span{font-size:.7rem;color:rgba(255,255,255,.8);font-family:var(--mono)}
+.hs-body{padding:16px}
+.hs-row{display:flex;gap:8px;align-items:center;padding:9px 10px;border-bottom:1px solid var(--gray100);font-size:.75rem}
+.hs-row:last-child{border-bottom:none}
+.hs-code{font-family:var(--mono);font-size:.65rem;background:var(--teal3);color:var(--teal);padding:3px 7px;border-radius:5px;font-weight:600}
+.hs-badge-act{background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+
+/* ── PANTALLA MOCK ── */
+.screen-mock{
+  background:var(--white);border-radius:14px;border:1.5px solid var(--gray200);
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.sm-topbar{background:var(--teal);padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.sm-topbar-left{display:flex;align-items:center;gap:10px}
+.sm-topbar span{font-size:.72rem;color:rgba(255,255,255,.8);font-family:var(--mono)}
+.sm-topbar-right{display:flex;gap:6px}
+.sm-btn-new{background:white;color:var(--teal);border:none;border-radius:7px;padding:5px 12px;font-size:.7rem;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer;font-family:var(--font)}
+.sm-header{padding:12px 18px;border-bottom:1px solid var(--gray100);display:flex;align-items:center;justify-content:space-between}
+.sm-header-left h4{font-size:.9rem;font-weight:700;color:var(--slate)}
+.sm-header-left p{font-size:.7rem;color:var(--gray400)}
+.sm-pills{display:flex;gap:6px}
+.sm-pill-act{background:#dcfce7;color:#16a34a;padding:3px 10px;border-radius:10px;font-size:.65rem;font-weight:600}
+.sm-pill-ina{background:var(--gray100);color:var(--gray400);padding:3px 10px;border-radius:10px;font-size:.65rem;font-weight:600}
+.sm-filters{padding:10px 18px;display:flex;gap:8px;border-bottom:1px solid var(--gray100)}
+.sm-select{border:1px solid var(--gray200);border-radius:7px;padding:5px 10px;font-size:.7rem;color:var(--gray600);flex:0 0 auto;font-family:var(--font)}
+.sm-search{border:1px solid var(--gray200);border-radius:7px;padding:5px 12px;font-size:.7rem;color:var(--gray400);flex:1;font-family:var(--font)}
+.sm-table{width:100%;border-collapse:collapse;font-size:.7rem}
+.sm-table thead tr{background:var(--gray50)}
+.sm-table th{padding:7px 10px;text-align:left;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gray400);font-weight:600;border-bottom:1px solid var(--gray200)}
+.sm-table td{padding:8px 10px;border-bottom:1px solid var(--gray100);vertical-align:middle}
+.sm-table tr:last-child td{border-bottom:none}
+.sm-actions{display:flex;gap:4px;justify-content:center}
+.act-edit{width:26px;height:26px;border-radius:7px;border:1.5px solid var(--gray200);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.act-edit svg{fill:var(--teal);width:12px;height:12px}
+.act-off{width:26px;height:26px;border-radius:7px;border:1.5px solid #fde68a;background:#fffbeb;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.act-off svg{fill:var(--amber);width:12px;height:12px}
+.act-del{width:26px;height:26px;border-radius:7px;border:1.5px solid #fecaca;background:#fef2f2;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.act-del svg{fill:var(--red);width:12px;height:12px}
+.cb{width:12px;height:12px;border:1.5px solid var(--gray300);border-radius:3px}
+.cb.checked{background:var(--teal);border-color:var(--teal)}
+
+/* ── CALLOUT BOXES ── */
+.callout-grid{display:grid;gap:16px}
+.callout{border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+.callout.teal{background:var(--teal3);border:1.5px solid var(--teal4)}
+.callout.red{background:#fef2f2;border:1.5px solid #fecaca}
+.callout.amber{background:#fffbeb;border:1.5px solid #fde68a}
+.callout.green{background:#f0fdf4;border:1.5px solid #bbf7d0}
+.callout-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.callout.teal .callout-icon{background:var(--teal);color:white}
+.callout.red .callout-icon{background:var(--red);color:white}
+.callout.amber .callout-icon{background:var(--amber);color:white}
+.callout.green .callout-icon{background:var(--green);color:white}
+.callout h4{font-size:.82rem;font-weight:700;margin-bottom:5px}
+.callout.teal h4{color:var(--teal)}
+.callout.red h4{color:#b91c1c}
+.callout.amber h4{color:#92400e}
+.callout.green h4{color:#15803d}
+.callout p{font-size:.78rem;line-height:1.6;color:var(--gray600)}
+.callout p strong{color:var(--slate)}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:20px;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:18px;top:42px;bottom:0;width:2px;background:var(--gray200)}
+.step-num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;position:relative;z-index:1}
+.step-body{padding-bottom:24px;flex:1}
+.step-title{font-size:.9rem;font-weight:700;color:var(--slate);margin-bottom:5px;margin-top:7px}
+.step-desc{font-size:.8rem;color:var(--gray600);line-height:1.6}
+.step-note{margin-top:8px;background:var(--teal3);border-radius:8px;padding:8px 12px;font-size:.75rem;color:var(--teal);font-weight:500}
+
+/* ── FORM MOCK ── */
+.form-mock{background:white;border-radius:14px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow)}
+.fm-head{background:var(--gray50);border-bottom:1.5px solid var(--gray200);padding:14px 20px;display:flex;align-items:center;gap:12px}
+.fm-head-icon{width:36px;height:36px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.fm-head-icon svg{fill:white;width:18px;height:18px}
+.fm-head-title{font-size:.9rem;font-weight:700;color:var(--slate)}
+.fm-head-sub{font-size:.7rem;color:var(--gray400)}
+.fm-body{padding:20px}
+.fm-field{margin-bottom:14px}
+.fm-field label{display:block;font-size:.72rem;font-weight:600;color:var(--gray600);margin-bottom:5px}
+.fm-field label .req{color:var(--red)}
+.fm-input{width:100%;border:1.5px solid var(--gray200);border-radius:8px;padding:8px 12px;font-size:.78rem;color:var(--slate);font-family:var(--font);background:white}
+.fm-input.active-green{border-color:var(--green)}
+.fm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fm-code{background:var(--teal3);border:1.5px solid var(--teal4);border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:.78rem;color:var(--teal);font-weight:600}
+.fm-denom-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.fm-denom-item{display:flex;align-items:center;gap:8px}
+.fm-denom-letter{width:26px;height:26px;border-radius:7px;background:var(--teal3);color:var(--teal);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.fm-denom-input{flex:1;border:1.5px solid var(--gray200);border-radius:7px;padding:6px 10px;font-size:.73rem;font-family:var(--font);color:var(--slate)}
+.fm-footer{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1.5px solid var(--gray100)}
+.fm-btn-cancel{background:white;border:1.5px solid var(--gray200);color:var(--gray600);border-radius:8px;padding:7px 18px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--font)}
+.fm-btn-save{background:var(--teal);border:none;color:white;border-radius:8px;padding:7px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:6px}
+
+/* ── HIGHLIGHTED ACTION ROWS ── */
+.action-explain{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ae-card{background:white;border-radius:12px;border:1.5px solid var(--gray200);padding:20px;box-shadow:var(--shadow)}
+.ae-btn-demo{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.ae-btn-demo.edit{background:#eff6ff;border:2px solid #bfdbfe}
+.ae-btn-demo.off{background:#fffbeb;border:2px solid #fde68a}
+.ae-btn-demo.del{background:#fef2f2;border:2px solid #fecaca}
+.ae-btn-demo svg{width:20px;height:20px}
+.ae-btn-demo.edit svg{fill:#2563eb}
+.ae-btn-demo.off svg{fill:var(--amber)}
+.ae-btn-demo.del svg{fill:var(--red)}
+.ae-title{font-size:.85rem;font-weight:700;margin-bottom:6px}
+.ae-card.edit .ae-title{color:#1d4ed8}
+.ae-card.off .ae-title{color:#92400e}
+.ae-card.del .ae-title{color:#b91c1c}
+.ae-desc{font-size:.78rem;color:var(--gray600);line-height:1.6}
+.ae-result{margin-top:10px;border-radius:7px;padding:8px 10px;font-size:.72rem;font-weight:600}
+.ae-card.edit .ae-result{background:#eff6ff;color:#1d4ed8}
+.ae-card.off .ae-result{background:#fffbeb;color:#92400e}
+.ae-card.del .ae-result{background:#fef2f2;color:#b91c1c}
+
+/* ── CODE ANATOMY ── */
+.code-anatomy{background:var(--gray800);border-radius:14px;padding:24px;font-family:var(--mono)}
+.ca-code{font-size:1.4rem;font-weight:700;letter-spacing:.08em;display:flex;flex-wrap:wrap;gap:2px;margin-bottom:20px}
+.ca-part{padding:6px 10px;border-radius:6px;font-size:1rem}
+.ca-part.odc{background:rgba(249,115,22,.25);color:#fb923c}
+.ca-part.eess{background:rgba(6,182,212,.2);color:#22d3ee}
+.ca-part.piso{background:rgba(168,85,247,.2);color:#c084fc}
+.ca-part.serv{background:rgba(34,197,94,.2);color:#4ade80}
+.ca-part.tipo{background:rgba(245,158,11,.2);color:#fbbf24}
+.ca-part.suf{background:rgba(239,68,68,.2);color:#f87171}
+.ca-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ca-leg-item{background:rgba(255,255,255,.05);border-radius:8px;padding:10px 12px}
+.ca-leg-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:4px}
+.ca-leg-value{font-size:.75rem;font-weight:600}
+.ca-leg-source{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:2px}
+
+/* ── EXPORT SECTION ── */
+.export-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.es-card{background:white;border:1.5px solid var(--gray200);border-radius:12px;padding:18px;text-align:center;box-shadow:var(--shadow)}
+.es-icon{font-size:1.6rem;margin-bottom:10px}
+.es-num{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--teal);color:white;font-size:.65rem;font-weight:700;line-height:20px;text-align:center;margin-bottom:8px}
+.es-title{font-size:.78rem;font-weight:700;color:var(--slate);margin-bottom:4px}
+.es-desc{font-size:.71rem;color:var(--gray400);line-height:1.5}
+
+/* ── CONTROLS ── */
+.controls{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:white;border-top:1px solid var(--gray200);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.ctrl-info{font-size:.72rem;color:var(--gray400);font-family:var(--mono)}
+.ctrl-btns{display:flex;gap:8px}
+.ctrl-btn{
+  background:var(--gray100);border:1.5px solid var(--gray200);color:var(--gray600);
+  border-radius:8px;padding:6px 18px;cursor:pointer;font-size:.78rem;font-family:var(--font);font-weight:600;
+  transition:all .18s;
+}
+.ctrl-btn:hover{background:var(--teal);border-color:var(--teal);color:white}
+.ctrl-btn:disabled{opacity:.3;cursor:not-allowed}
+.ctrl-dots{display:flex;gap:5px;align-items:center}
+.ctrl-dot{width:7px;height:7px;border-radius:50%;background:var(--gray200);transition:all .2s}
+.ctrl-dot.active{background:var(--teal);width:20px;border-radius:4px}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.two-col-3{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-dot"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
+    <span class="nav-brand-name">TS.<span>Cronos</span> OT</span>
+  </div>
+  <button class="nav-pill active" onclick="goTo(0)">Inicio</button>
+  <button class="nav-pill" onclick="goTo(1)">La pantalla principal</button>
+  <button class="nav-pill" onclick="goTo(2)">Buscar y filtrar</button>
+  <button class="nav-pill" onclick="goTo(3)">Nuevo registro</button>
+  <button class="nav-pill" onclick="goTo(4)">Editar</button>
+  <button class="nav-pill" onclick="goTo(5)">Desactivar / Activar</button>
+  <button class="nav-pill" onclick="goTo(6)">Eliminar</button>
+  <button class="nav-pill" onclick="goTo(7)">Exportar a Excel</button>
+  <button class="nav-pill" onclick="goTo(8)">El código generado</button>
+</nav>
+
+<!-- ══════════════════════ SLIDE 0 — HERO ══════════════════════ -->
+<section class="slide hero-bg active" id="s0" style="position:relative;overflow:hidden">
+  <div style="max-width:52%">
+    <div class="s-tag">Capacitación de usuarios · TS.Cronos OT</div>
+    <h1 class="s-title" style="font-size:clamp(2rem,3.5vw,3rem)">Inventario de<br>Infraestructura<br>Hospitalaria</h1>
+    <p class="s-sub">Aprende a registrar, editar, activar, desactivar y exportar los ambientes del Formato 3A-1B desde el sistema TS.Cronos.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">📋 Nuevo Registro</span>
+      <span class="hero-pill">✏️ Editar</span>
+      <span class="hero-pill">⏸ Desactivar</span>
+      <span class="hero-pill">🗑 Eliminar</span>
+      <span class="hero-pill">📊 Exportar Excel</span>
+      <span class="hero-pill">🔍 Buscar y filtrar</span>
+    </div>
+  </div>
+  <!-- Mini screen mockup -->
+  <div class="hero-screen">
+    <div class="hs-bar">
+      <div class="hs-bar-dot"></div><div class="hs-bar-dot"></div><div class="hs-bar-dot"></div>
+      <span style="margin-left:4px">Inventario de Infraestructura</span>
+    </div>
+    <div class="hs-body">
+      <div class="hs-row"><div class="cb checked"></div><span style="flex:1;color:#475569">CAP. III CHULUCANAS</span><span class="hs-code">09100122240001B01A</span><span class="hs-badge-act">Activo</span></div>
+      <div class="hs-row"><div class="cb"></div><span style="flex:1;color:#475569">CAP. III CHULUCANAS</span><span class="hs-code">09100122240001B01B</span><span class="hs-badge-act">Activo</span></div>
+      <div class="hs-row"><div class="cb"></div><span style="flex:1;color:#475569">CAP. III CHULUCANAS</span><span class="hs-code">09100122240001B01C</span><span class="hs-badge-act">Activo</span></div>
+      <div class="hs-row"><div class="cb"></div><span style="flex:1;color:#475569">CAP. III CHULUCANAS</span><span class="hs-code">09100122240001B02A</span><span class="hs-badge-act">Activo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 1 — PANTALLA PRINCIPAL ══════════════════════ -->
+<section class="slide" id="s1">
+  <div class="s-tag">Slide 01</div>
+  <h2 class="s-title">La pantalla principal</h2>
+  <p class="s-sub">Todo lo que ves en el listado y para qué sirve cada parte.</p>
+  <div class="two-col-3">
+    <div>
+      <!-- Screen mock -->
+      <div class="screen-mock">
+        <div class="sm-topbar">
+          <div class="sm-topbar-left">
+            <svg fill="white" width="14" height="14" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>Inventario de Infraestructura</span>
+          </div>
+          <button class="sm-btn-new">
+            <svg fill="currentColor" width="10" height="10" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            + Nuevo Registro
+          </button>
+        </div>
+        <div class="sm-header">
+          <div class="sm-header-left">
+            <h4>Inventario de Infraestructura</h4>
+            <p>PIURA / CHULUCANAS</p>
+          </div>
+          <div class="sm-pills">
+            <span class="sm-pill-act">● 24 Activos</span>
+            <span class="sm-pill-ina">● 0 Inactivos</span>
+          </div>
+        </div>
+        <div class="sm-filters">
+          <select class="sm-select"><option>Todas las IPRESS</option></select>
+          <input class="sm-search" placeholder="🔍  Buscar por denominación, servicio o código..." readonly />
+        </div>
+        <table class="sm-table">
+          <thead><tr>
+            <th style="width:22px"><div class="cb"></div></th>
+            <th>#</th><th>IPRESS</th><th>SERVICIO</th><th>PISO</th><th>CÓDIGO</th><th>DENOMINACIÓN</th><th>ESTADO</th><th>ACCIONES</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="cb checked"></div></td>
+              <td style="color:var(--gray400)">1</td>
+              <td style="font-size:.68rem">CAP. III<br>CHULUCANAS</td>
+              <td style="font-size:.68rem;color:var(--gray400)">UPSS Consulta<br>Externa</td>
+              <td>01</td>
+              <td><span class="hs-code">0910012224…B01A</span></td>
+              <td style="font-size:.7rem">HALL PÚBLICO 1</td>
+              <td><span class="hs-badge-act">Activo</span></td>
+              <td><div class="sm-actions">
+                <div class="act-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg></div>
+                <div class="act-off"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg></div>
+                <div class="act-del"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div class="cb"></div></td>
+              <td style="color:var(--gray400)">2</td>
+              <td style="font-size:.68rem">CAP. III<br>CHULUCANAS</td>
+              <td style="font-size:.68rem;color:var(--gray400)">UPSS Consulta<br>Externa</td>
+              <td>01</td>
+              <td><span class="hs-code">0910012224…B01B</span></td>
+              <td style="font-size:.7rem">HALL PÚBLICO 2</td>
+              <td><span class="hs-badge-act">Activo</span></td>
+              <td><div class="sm-actions">
+                <div class="act-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg></div>
+                <div class="act-off"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg></div>
+                <div class="act-del"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="callout teal"><div class="callout-icon">🔢</div><div><h4>Contadores arriba a la derecha</h4><p>Te muestran cuántos registros hay <strong>Activos</strong> e <strong>Inactivos</strong> en este momento. Se actualizan solos cada vez que haces un cambio.</p></div></div>
+      <div class="callout amber"><div class="callout-icon">☑️</div><div><h4>Casilla de verificación (checkbox)</h4><p>Marca uno o varios registros para <strong>exportarlos juntos a Excel</strong>. Al marcar al menos uno, aparece el botón "Exportar (N)" en la parte superior.</p></div></div>
+      <div class="callout teal" style="background:#eff6ff;border-color:#bfdbfe"><div class="callout-icon" style="background:#2563eb">✏️</div><div><h4 style="color:#1d4ed8">Botón Editar (azul)</h4><p>Abre el formulario para <strong>cambiar la denominación o el ambiente</strong> de ese registro. El código nunca cambia.</p></div></div>
+      <div class="callout amber"><div class="callout-icon">⏸</div><div><h4>Botón Desactivar (amarillo)</h4><p>Marca el registro como <strong>Inactivo</strong>. Sigue en la lista pero aparece en gris. Se puede volver a activar.</p></div></div>
+      <div class="callout red"><div class="callout-icon">🗑</div><div><h4>Botón Eliminar (rojo)</h4><p>Borra el registro <strong>permanentemente</strong> de la lista. Requiere confirmación. Esta acción no se puede deshacer.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 2 — BUSCAR Y FILTRAR ══════════════════════ -->
+<section class="slide" id="s2">
+  <div class="s-tag">Slide 02</div>
+  <h2 class="s-title">Buscar y filtrar registros</h2>
+  <p class="s-sub">El sistema tiene dos herramientas para encontrar rápido lo que necesitas.</p>
+  <div class="two-col">
+    <div>
+      <div class="screen-mock" style="margin-bottom:20px">
+        <div class="sm-filters" style="padding:14px 18px;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px;width:100%">
+            <div style="flex:0 0 auto">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray400);margin-bottom:4px">Filtrar por IPRESS</div>
+              <select class="sm-select" style="min-width:200px;border-color:var(--teal)">
+                <option>CAP. III CHULUCANAS</option>
+              </select>
+            </div>
+          </div>
+          <div style="width:100%">
+            <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray400);margin-bottom:4px">Búsqueda de texto</div>
+            <div style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--teal);border-radius:8px;padding:7px 12px">
+              <svg fill="var(--gray400)" width="14" height="14" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <span style="font-size:.75rem;color:var(--teal);font-style:italic">HALL PÚBLICO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout teal">
+        <div class="callout-icon">💡</div>
+        <div>
+          <h4>La búsqueda funciona en tiempo real</h4>
+          <p>No necesitas presionar Enter. A medida que escribes, la tabla se filtra sola. Puedes buscar por <strong>denominación</strong>, <strong>nombre del servicio</strong> o <strong>código</strong> del ambiente.</p>
+        </div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Selecciona una IPRESS específica</div>
+          <div class="step-desc">El menú desplegable "Todas las IPRESS" te permite ver solo los ambientes de una institución. Útil cuando hay muchos registros de distintas IPRESS en tu micro red.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Escribe en el buscador</div>
+          <div class="step-desc">Puedes escribir parte del nombre: "HALL", "SALA DE ESPERA", "09100..." y el sistema filtrará automáticamente los resultados que coincidan.</div>
+          <div class="step-note">Puedes combinar ambos filtros al mismo tiempo — IPRESS + texto de búsqueda.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Revisa el contador de resultados</div>
+          <div class="step-desc">A la derecha del buscador aparece "N registro(s)". Te confirma cuántos registros coinciden con tu búsqueda actual.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Para limpiar el filtro</div>
+          <div class="step-desc">Haz click en la "✕" que aparece dentro del buscador cuando hay texto, o cambia el selector de IPRESS a "Todas las IPRESS".</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 3 — NUEVO REGISTRO ══════════════════════ -->
+<section class="slide" id="s3">
+  <div class="s-tag">Slide 03</div>
+  <h2 class="s-title">Crear un nuevo registro</h2>
+  <p class="s-sub">El formulario "Formato 3A-1B" genera automáticamente el código y las denominaciones según lo que seleccionas.</p>
+  <div class="two-col-3">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Click en "+ Nuevo Registro"</div>
+          <div class="step-desc">Botón en la esquina superior derecha. Se abre el formulario Formato 3A-1B.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Selecciona la IPRESS</div>
+          <div class="step-desc">Solo aparecen las IPRESS de tu Micro Red actual. Si no ves la IPRESS que buscas, puede ser que no esté en tu red de trabajo.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Selecciona Servicio Hospitalario</div>
+          <div class="step-desc">Se carga al seleccionar la IPRESS. Elige el servicio al que pertenece el ambiente que vas a registrar.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Selecciona el Ambiente</div>
+          <div class="step-desc">Los ambientes disponibles se filtran según el Servicio Hospitalario elegido. La denominación se pre-llena automáticamente con el nombre del ambiente.</div>
+          <div class="step-note">💡 Si necesitas un nombre diferente, puedes editarlo en el campo de abajo.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Elige Piso y Cantidad de Sub-Ambientes</div>
+          <div class="step-desc">El piso define parte del código. La cantidad indica cuántos sub-ambientes del mismo tipo se registrarán: uno genera "001", dos o más generan "A", "B", "C"...</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Revisa el código generado y click en Grabar</div>
+          <div class="step-desc">El código de 18 caracteres aparece en azul y se forma automáticamente. Verifica que sea correcto y presiona Grabar.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-mock">
+        <div class="fm-head">
+          <div class="fm-head-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
+          <div><div class="fm-head-title">Formato 3A-1B</div><div class="fm-head-sub">Seleccione los datos del ambiente a registrar</div></div>
+        </div>
+        <div class="fm-body">
+          <div class="fm-field">
+            <label>IPRESS <span class="req">*</span></label>
+            <select class="fm-input active-green"><option>CAP. III CHULUCANAS</option></select>
+          </div>
+          <div class="fm-field">
+            <label>Servicio Hospitalario <span class="req">*</span></label>
+            <select class="fm-input active-green"><option>UPSS Centro Quirúrgico</option></select>
+          </div>
+          <div class="fm-field">
+            <label>Ambiente <span class="req">*</span></label>
+            <select class="fm-input active-green"><option>Sala de operaciones de cirugía de cabeza y cuello</option></select>
+          </div>
+          <div class="fm-row">
+            <div class="fm-field">
+              <label>Piso <span class="req">*</span></label>
+              <select class="fm-input active-green"><option>02</option></select>
+            </div>
+            <div class="fm-field">
+              <label>Cantidad Sub-Ambientes</label>
+              <input class="fm-input active-green" type="number" value="2" readonly />
+            </div>
+          </div>
+          <div class="fm-code">CÓDIGO: 091002040000001A___</div>
+          <div class="fm-field" style="margin-top:12px">
+            <label>Denominación por sub-ambiente</label>
+            <div class="fm-denom-list">
+              <div class="fm-denom-item"><div class="fm-denom-letter">A</div><input class="fm-denom-input" value="Sala de operaciones de cirugía de cabeza y cuello" readonly /></div>
+              <div class="fm-denom-item"><div class="fm-denom-letter">B</div><input class="fm-denom-input" value="Sala de operaciones de cirugía de cabeza y cuello" readonly /></div>
+            </div>
+          </div>
+        </div>
+        <div class="fm-footer">
+          <button class="fm-btn-cancel">Cancelar</button>
+          <button class="fm-btn-save"><svg fill="white" width="14" height="14" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Grabar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 4 — EDITAR ══════════════════════ -->
+<section class="slide" id="s4">
+  <div class="s-tag">Slide 04</div>
+  <h2 class="s-title">Editar un registro</h2>
+  <p class="s-sub">Puedes modificar la denominación y el tipo de ambiente. El código generado nunca cambia.</p>
+  <div class="two-col">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Haz click en el botón azul ✏️</div>
+          <div class="step-desc">Es el primer botón de la columna Acciones. Se abre el formulario de edición con los datos actuales del registro cargados.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Modifica lo que necesites</div>
+          <div class="step-desc">Solo puedes cambiar dos cosas: el <strong>Ambiente</strong> (tipo de ambiente del catálogo) y la <strong>Denominación</strong> (el nombre visible en el listado y en el Excel).</div>
+          <div class="step-note">⚠️ El código de 18 caracteres es permanente. No cambia aunque edites el registro.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Click en Guardar</div>
+          <div class="step-desc">El sistema guarda los cambios y cierra el formulario. Verás el mensaje "Actualizado correctamente" en la pantalla.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="callout teal">
+        <div class="callout-icon">✏️</div>
+        <div>
+          <h4>¿Qué se puede cambiar?</h4>
+          <p>✅ <strong>Ambiente</strong> — el tipo de ambiente del catálogo<br>✅ <strong>Denominación</strong> — el nombre del ambiente<br><br>❌ IPRESS, Servicio, Piso, Código — estos no se pueden modificar</p>
+        </div>
+      </div>
+      <div class="callout amber">
+        <div class="callout-icon">⚠️</div>
+        <div>
+          <h4>¿Por qué el código no cambia?</h4>
+          <p>El código identifica de manera <strong>única y permanente</strong> ese ambiente en el sistema EsSalud. Cambiarlo rompería la trazabilidad de ese espacio en el tiempo. Si registraste algo mal, la opción correcta es <strong>eliminar y volver a crear</strong>.</p>
+        </div>
+      </div>
+      <div class="callout green">
+        <div class="callout-icon">✅</div>
+        <div>
+          <h4>Cuándo usar Editar</h4>
+          <p>Cuando el nombre del ambiente cambió (ej: "SALA DE ESPERA" pasó a llamarse "SALA DE ESPERA 1 DE CONSULTA EXTERNA") o cuando seleccionaste el tipo de ambiente incorrecto del catálogo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 5 — DESACTIVAR ══════════════════════ -->
+<section class="slide" id="s5">
+  <div class="s-tag">Slide 05</div>
+  <h2 class="s-title">Desactivar y volver a activar</h2>
+  <p class="s-sub">Desactivar marca un ambiente como inactivo. El registro <strong>no desaparece</strong> — sigue visible en la lista y se puede reactivar.</p>
+  <div class="two-col">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Haz click en el botón amarillo ⏸</div>
+          <div class="step-desc">Es el segundo botón de Acciones. Aparece un mensaje de confirmación preguntando si deseas desactivar ese ambiente.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Confirma la acción</div>
+          <div class="step-desc">El sistema te muestra el nombre del registro y te pide confirmar. Click en "Desactivar" para continuar o "Cancelar" para no hacer nada.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">El registro aparece como Inactivo</div>
+          <div class="step-desc">La fila se muestra en gris y el badge cambia a "Inactivo". El botón amarillo ahora dice "Activar" — puedes hacer click de nuevo para revertir.</div>
+          <div class="step-note">💡 El contador "Inactivos" en la parte superior se actualiza automáticamente.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:white;border-radius:14px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow)">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--gray100)">
+          <div style="font-size:.7rem;font-weight:700;color:var(--slate);margin-bottom:2px">Antes: registro Activo</div>
+        </div>
+        <table class="sm-table"><tbody>
+          <tr>
+            <td style="font-size:.68rem">HALL PÚBLICO 1</td>
+            <td><span class="hs-badge-act">Activo</span></td>
+            <td><div class="sm-actions">
+              <div class="act-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg></div>
+              <div class="act-off"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg></div>
+              <div class="act-del"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+            </div></td>
+          </tr>
+        </tbody></table>
+        <div style="padding:12px 16px;border-top:1px solid var(--gray100);border-bottom:1px solid var(--gray100)">
+          <div style="font-size:.7rem;font-weight:700;color:var(--slate);margin-bottom:2px">Después: registro Inactivo</div>
+        </div>
+        <table class="sm-table"><tbody>
+          <tr style="background:var(--gray50);opacity:.7">
+            <td style="font-size:.68rem;color:var(--gray400)">HALL PÚBLICO 1</td>
+            <td><span style="background:var(--gray100);color:var(--gray400);padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600">Inactivo</span></td>
+            <td><div class="sm-actions">
+              <div class="act-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg></div>
+              <div style="width:26px;height:26px;border-radius:7px;border:1.5px solid #bbf7d0;background:#f0fdf4;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg fill="#16a34a" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+              <div class="act-del"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+            </div></td>
+          </tr>
+        </tbody></table>
+      </div>
+      <div class="callout amber">
+        <div class="callout-icon">💡</div>
+        <div><h4>¿Cuándo desactivar en lugar de eliminar?</h4><p>Cuando el ambiente <strong>temporalmente no está en uso</strong> pero podría volver a estarlo. Por ejemplo, un ambiente en remodelación. Desactivar es reversible — eliminar no.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 6 — ELIMINAR ══════════════════════ -->
+<section class="slide" id="s6">
+  <div class="s-tag">Slide 06</div>
+  <h2 class="s-title">Eliminar un registro</h2>
+  <p class="s-sub">Eliminar borra el registro permanentemente de la lista. Requiere doble confirmación. <strong>Esta acción no se puede deshacer.</strong></p>
+  <div class="two-col">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Haz click en el botón rojo 🗑</div>
+          <div class="step-desc">Es el tercer botón de la columna Acciones. Se abre un modal de advertencia con fondo rojo.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Lee la advertencia</div>
+          <div class="step-desc">El sistema te muestra el nombre del registro y una advertencia clara: <em>"Esta acción no se puede deshacer"</em> y <em>"El registro desaparecerá permanentemente de la lista"</em>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Confirma o cancela</div>
+          <div class="step-desc">Click en el botón rojo "Eliminar" para confirmar. Si no estás seguro, click en "Cancelar" — no pasa nada.</div>
+          <div class="step-note" style="background:#fef2f2;color:#b91c1c">⚠️ Una vez eliminado, el registro desaparece. No hay forma de recuperarlo desde la interfaz.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Modal de eliminación simulado -->
+      <div style="background:white;border-radius:14px;border:1.5px solid #fecaca;overflow:hidden;box-shadow:var(--shadow-lg)">
+        <div style="background:var(--red);padding:14px 18px;display:flex;align-items:center;gap:12px">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center">
+            <svg fill="white" width="18" height="18" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:.88rem;font-weight:700;color:white">Eliminar Ambiente</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.75)">Esta acción no se puede deshacer</div>
+          </div>
+        </div>
+        <div style="padding:18px 20px">
+          <p style="font-size:.82rem;color:var(--gray600);line-height:1.6;margin-bottom:14px">¿Seguro de eliminar el ambiente <strong style="color:var(--slate)">HALL PÚBLICO 1</strong>?</p>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:18px">
+            <svg fill="#ef4444" width="16" height="16" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+            <span style="font-size:.75rem;color:#b91c1c;font-weight:500">El registro desaparecerá permanentemente de la lista.</span>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px">
+            <button style="background:white;border:1.5px solid var(--gray200);color:var(--gray600);border-radius:8px;padding:7px 18px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--font)">Cancelar</button>
+            <button style="background:var(--red);border:none;color:white;border-radius:8px;padding:7px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:6px">
+              <svg fill="white" width="13" height="13" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg>Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="callout red">
+        <div class="callout-icon">🚨</div>
+        <div><h4>¿Cuándo eliminar?</h4><p>Solo cuando el registro fue creado <strong>por error</strong> — IPRESS incorrecta, piso incorrecto, código equivocado. Para ambientes que ya no están en uso pero existieron, usa <strong>Desactivar</strong>.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 7 — EXPORTAR ══════════════════════ -->
+<section class="slide" id="s7">
+  <div class="s-tag">Slide 07</div>
+  <h2 class="s-title">Exportar a Excel — Formato 3A-1B</h2>
+  <p class="s-sub">Puedes exportar uno o varios registros a un archivo Excel (.xlsx) con el formato oficial del Inventario de Infraestructura.</p>
+  <div class="export-steps" style="margin-bottom:28px">
+    <div class="es-card">
+      <div class="es-icon">☑️</div>
+      <div class="es-num">1</div>
+      <div class="es-title">Marca los registros</div>
+      <div class="es-desc">Haz click en la casilla de la izquierda de cada fila que quieras exportar. Puedes seleccionar varios a la vez.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-icon">🟦</div>
+      <div class="es-num">2</div>
+      <div class="es-title">Aparece el botón</div>
+      <div class="es-desc">Al marcar al menos una fila, aparece el botón "Exportar (N)" en la parte superior con el número de registros seleccionados.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-icon">📊</div>
+      <div class="es-num">3</div>
+      <div class="es-title">Click en Exportar</div>
+      <div class="es-desc">El sistema genera el archivo Excel automáticamente. Solo con los registros que marcaste, en el formato 3A-1B oficial.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-icon">💾</div>
+      <div class="es-num">4</div>
+      <div class="es-title">Se descarga el archivo</div>
+      <div class="es-desc">El navegador descarga el .xlsx automáticamente. Ábrelo con Excel o Google Sheets para revisar el formato.</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div class="callout teal">
+      <div class="callout-icon">📋</div>
+      <div><h4>¿Qué contiene el Excel?</h4><p>El archivo incluye el código, la IPRESS, el servicio, el piso, la denominación del ambiente y todos los datos necesarios para el Formato 3A-1B oficial de EsSalud.</p></div>
+    </div>
+    <div class="callout amber">
+      <div class="callout-icon">💡</div>
+      <div><h4>Exportar todo</h4><p>Si quieres exportar todos los registros visibles, usa el checkbox del encabezado de la tabla (arriba de todos) para seleccionar todos de un solo click.</p></div>
+    </div>
+    <div class="callout green">
+      <div class="callout-icon">✅</div>
+      <div><h4>Solo exporta lo seleccionado</h4><p>El filtro no afecta la exportación. Solo se exportan los registros que <strong>marcaste con el checkbox</strong>, independientemente de lo que haya en el buscador.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 8 — CÓDIGO GENERADO ══════════════════════ -->
+<section class="slide" id="s8">
+  <div class="s-tag">Slide 08</div>
+  <h2 class="s-title">El código de 18 caracteres</h2>
+  <p class="s-sub">El sistema genera automáticamente un código único para cada ambiente. Entender su estructura ayuda a verificar que todo esté correcto.</p>
+  <div class="code-anatomy" style="margin-bottom:24px">
+    <div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.3);margin-bottom:10px">Anatomía del código</div>
+    <div class="ca-code">
+      <span class="ca-part odc">09</span>
+      <span class="ca-part eess">10</span>
+      <span class="ca-part piso">01</span>
+      <span class="ca-part serv">22240001</span>
+      <span class="ca-part tipo">B</span>
+      <span class="ca-part suf">01A</span>
+    </div>
+    <div class="ca-legend">
+      <div class="ca-leg-item"><div class="ca-leg-label">ODC (2 dígitos)</div><div class="ca-leg-value" style="color:#fb923c">09</div><div class="ca-leg-source">Red Asistencial PIURA</div></div>
+      <div class="ca-leg-item"><div class="ca-leg-label">EESS (2 dígitos)</div><div class="ca-leg-value" style="color:#22d3ee">10</div><div class="ca-leg-source">Código de la IPRESS</div></div>
+      <div class="ca-leg-item"><div class="ca-leg-label">PISO (2 dígitos)</div><div class="ca-leg-value" style="color:#c084fc">01</div><div class="ca-leg-source">Piso seleccionado</div></div>
+      <div class="ca-leg-item"><div class="ca-leg-label">SERVICIO (8 dígitos)</div><div class="ca-leg-value" style="color:#4ade80">22240001</div><div class="ca-leg-source">Código Servicio Hospitalario</div></div>
+      <div class="ca-leg-item"><div class="ca-leg-label">TIPO (1 letra)</div><div class="ca-leg-value" style="color:#fbbf24">B</div><div class="ca-leg-source">Tipo de Ambiente</div></div>
+      <div class="ca-leg-item"><div class="ca-leg-label">SUFIJO (3 caracteres)</div><div class="ca-leg-value" style="color:#f87171">01A</div><div class="ca-leg-source">N° correlativo + letra sub-amb.</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="callout teal">
+      <div class="callout-icon">🔢</div>
+      <div>
+        <h4>¿Cómo se forman los últimos 3 caracteres?</h4>
+        <p>Si solo hay <strong>1 sub-ambiente</strong>: termina en "001" (tres números)<br>Si hay <strong>2 o más</strong>: termina en "01A", "01B", "01C"... (número + letra)<br><br>El número "01" es el correlativo automático del sistema para esa combinación de IPRESS + Servicio + Piso.</p>
+      </div>
+    </div>
+    <div class="callout amber">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h4>El código se muestra en tiempo real</h4>
+        <p>Mientras completas el formulario, el código aparece en azul debajo de los campos. Las últimas 3 posiciones se muestran como "___" porque el número correlativo lo asigna el servidor al momento de Grabar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CONTROLS ══════════════════════ -->
+<div class="controls">
+  <span class="ctrl-info" id="slideInfo">1 / 9</span>
+  <div class="ctrl-btns">
+    <button class="ctrl-btn" id="btnPrev" onclick="prev()" disabled>← Anterior</button>
+    <button class="ctrl-btn" id="btnNext" onclick="next()">Siguiente →</button>
+  </div>
+  <div class="ctrl-dots" id="dotsCont"></div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const pills  = document.querySelectorAll('.nav-pill');
+let cur = 0;
+
+const dotsEl = document.getElementById('dotsCont');
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'ctrl-dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  d.style.cursor = 'pointer';
+  dotsEl.appendChild(d);
+});
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  pills[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  pills[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  document.getElementById('btnPrev').disabled = cur===0;
+  document.getElementById('btnNext').disabled = cur===slides.length-1;
+  document.getElementById('slideInfo').textContent = `${cur+1} / ${slides.length}`;
+  window.scrollTo(0,0);
+}
+
+function next(){if(cur<slides.length-1)goTo(cur+1)}
+function prev(){if(cur>0)goTo(cur-1)}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+</script>
+</body>
+</html>
