@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS.Cronos OT — Guía de Uso · Inventario de Detalles</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:#0d6e7a; --teal2:#1a8a99; --teal3:#e6f7f9; --teal4:#b2e5eb;
+  --blue:#2563eb; --blue2:#eff6ff; --blue3:#bfdbfe;
+  --orange:#f97316; --red:#ef4444; --amber:#f59e0b; --green:#22c55e;
+  --violet:#7c3aed; --violet2:#f5f3ff; --violet3:#ddd6fe;
+  --slate:#0f172a; --white:#ffffff; --gray50:#f8fafc; --gray100:#f1f5f9;
+  --gray200:#e2e8f0; --gray300:#cbd5e1; --gray400:#94a3b8; --gray600:#475569; --gray800:#1e293b;
+  --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --shadow:0 4px 24px rgba(0,0,0,.08); --shadow-lg:0 12px 40px rgba(0,0,0,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--gray100);color:var(--slate);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--white);border-bottom:1px solid var(--gray200);
+  display:flex;align-items:center;gap:6px;padding:0 28px;height:54px;
+  box-shadow:0 1px 8px rgba(0,0,0,.06);overflow-x:auto;
+}
+nav::-webkit-scrollbar{height:0}
+.nav-brand{display:flex;align-items:center;gap:10px;margin-right:20px;flex-shrink:0}
+.nav-brand-dot{width:28px;height:28px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.nav-brand-dot svg{fill:white;width:16px;height:16px}
+.nav-brand-name{font-weight:700;font-size:.85rem;color:var(--slate)}
+.nav-brand-name span{color:var(--teal)}
+.nav-pill{
+  font-size:.7rem;font-weight:600;padding:5px 13px;border-radius:20px;cursor:pointer;
+  background:transparent;border:1.5px solid var(--gray200);color:var(--gray600);
+  transition:all .18s;font-family:var(--font);white-space:nowrap;flex-shrink:0;
+}
+.nav-pill:hover{border-color:var(--teal);color:var(--teal)}
+.nav-pill.active{background:var(--teal);border-color:var(--teal);color:white}
+
+/* ── SLIDES ── */
+.slide{min-height:100vh;padding:74px 60px 72px;display:none;flex-direction:column;justify-content:center;animation:fadeIn .35s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── SLIDE HEADER ── */
+.s-tag{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.s-title{font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;color:var(--slate);margin-bottom:8px;line-height:1.15}
+.s-sub{font-size:.95rem;color:var(--gray600);margin-bottom:36px;line-height:1.6;max-width:680px}
+
+/* ── HERO ── */
+.hero-bg{background:linear-gradient(135deg,var(--teal) 0%,#0a5460 100%);color:white}
+.hero-bg .s-tag{color:rgba(255,255,255,.6)}
+.hero-bg .s-title{color:white}
+.hero-bg .s-sub{color:rgba(255,255,255,.75)}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.hero-pill{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:white;padding:6px 16px;border-radius:20px;font-size:.78rem;font-weight:500;
+}
+
+/* ── CALLOUT BOXES ── */
+.callout-grid{display:grid;gap:16px}
+.callout{border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+.callout.teal{background:var(--teal3);border:1.5px solid var(--teal4)}
+.callout.red{background:#fef2f2;border:1.5px solid #fecaca}
+.callout.amber{background:#fffbeb;border:1.5px solid #fde68a}
+.callout.green{background:#f0fdf4;border:1.5px solid #bbf7d0}
+.callout.blue{background:var(--blue2);border:1.5px solid var(--blue3)}
+.callout.violet{background:var(--violet2);border:1.5px solid var(--violet3)}
+.callout-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.callout.teal .callout-icon{background:var(--teal);color:white}
+.callout.red .callout-icon{background:var(--red);color:white}
+.callout.amber .callout-icon{background:var(--amber);color:white}
+.callout.green .callout-icon{background:var(--green);color:white}
+.callout.blue .callout-icon{background:var(--blue);color:white}
+.callout.violet .callout-icon{background:var(--violet);color:white}
+.callout h4{font-size:.82rem;font-weight:700;margin-bottom:5px}
+.callout.teal h4{color:var(--teal)}
+.callout.red h4{color:#b91c1c}
+.callout.amber h4{color:#92400e}
+.callout.green h4{color:#15803d}
+.callout.blue h4{color:#1d4ed8}
+.callout.violet h4{color:#5b21b6}
+.callout p{font-size:.78rem;line-height:1.6;color:var(--gray600)}
+.callout p strong{color:var(--slate)}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:20px;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:18px;top:42px;bottom:0;width:2px;background:var(--gray200)}
+.step-num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;position:relative;z-index:1}
+.step-body{padding-bottom:24px;flex:1}
+.step-title{font-size:.9rem;font-weight:700;color:var(--slate);margin-bottom:5px;margin-top:7px}
+.step-desc{font-size:.8rem;color:var(--gray600);line-height:1.6}
+.step-note{margin-top:8px;background:var(--teal3);border-radius:8px;padding:8px 12px;font-size:.75rem;color:var(--teal);font-weight:500}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.two-col-3{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+
+/* ── CONTROLS ── */
+.controls{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:white;border-top:1px solid var(--gray200);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.ctrl-info{font-size:.72rem;color:var(--gray400);font-family:var(--mono)}
+.ctrl-btns{display:flex;gap:8px}
+.ctrl-btn{
+  background:var(--gray100);border:1.5px solid var(--gray200);color:var(--gray600);
+  border-radius:8px;padding:6px 18px;cursor:pointer;font-size:.78rem;font-family:var(--font);font-weight:600;
+  transition:all .18s;
+}
+.ctrl-btn:hover{background:var(--teal);border-color:var(--teal);color:white}
+.ctrl-btn:disabled{opacity:.3;cursor:not-allowed}
+.ctrl-dots{display:flex;gap:5px;align-items:center}
+.ctrl-dot{width:7px;height:7px;border-radius:50%;background:var(--gray200);transition:all .2s}
+.ctrl-dot.active{background:var(--teal);width:20px;border-radius:4px}
+
+/* ── SCREEN MOCK (lista de ambientes) ── */
+.screen-mock{background:var(--white);border-radius:14px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow)}
+.sm-topbar{background:var(--teal);padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.sm-topbar span{font-size:.72rem;color:rgba(255,255,255,.8);font-family:var(--mono)}
+.sm-filters{padding:10px 18px;display:flex;gap:8px;border-bottom:1px solid var(--gray100)}
+.sm-select{border:1px solid var(--gray200);border-radius:7px;padding:5px 10px;font-size:.7rem;color:var(--gray600);font-family:var(--font)}
+.sm-search{border:1px solid var(--gray200);border-radius:7px;padding:5px 12px;font-size:.7rem;color:var(--gray400);flex:1;font-family:var(--font)}
+.sm-table{width:100%;border-collapse:collapse;font-size:.7rem}
+.sm-table thead tr{background:var(--gray50)}
+.sm-table th{padding:7px 10px;text-align:left;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gray400);font-weight:600;border-bottom:1px solid var(--gray200)}
+.sm-table td{padding:8px 10px;border-bottom:1px solid var(--gray100);vertical-align:middle}
+.sm-table tr:last-child td{border-bottom:none}
+.sm-code{font-family:var(--mono);font-size:.65rem;background:var(--teal3);color:var(--teal);padding:3px 7px;border-radius:5px;font-weight:600}
+.prog-bar-wrap{display:flex;align-items:center;gap:7px}
+.prog-bar{height:6px;width:90px;background:var(--gray200);border-radius:3px;overflow:hidden}
+.prog-bar-fill{height:100%;background:var(--teal);border-radius:3px}
+.prog-text{font-size:.65rem;color:var(--gray400);font-family:var(--mono)}
+.badge-prog{background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.badge-pend{background:var(--gray100);color:var(--gray400);padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.badge-done{background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.sm-btn-reg{background:var(--teal);color:white;border:none;border-radius:7px;padding:4px 12px;font-size:.68rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+.sm-btn-mod{background:white;color:var(--teal);border:1.5px solid var(--teal3);border-radius:7px;padding:4px 12px;font-size:.68rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+
+/* ── ACCORDION MOCK ── */
+.acc-wrap{background:white;border-radius:14px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow)}
+.acc-area{border-bottom:1px solid var(--gray200)}
+.acc-area:last-child{border-bottom:none}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none}
+.acc-head-left{display:flex;align-items:center;gap:10px}
+.acc-area-dot{width:8px;height:8px;border-radius:50%}
+.acc-area-dot.done{background:#22c55e}
+.acc-area-dot.prog{background:var(--amber)}
+.acc-area-dot.pend{background:var(--gray300)}
+.acc-area-title{font-size:.8rem;font-weight:700;color:var(--slate)}
+.acc-badge{border-radius:20px;font-size:.65rem;font-weight:700;padding:2px 10px}
+.acc-badge.done{background:#dcfce7;color:#16a34a}
+.acc-badge.prog{background:#fef9c3;color:#854d0e}
+.acc-badge.pend{background:var(--gray100);color:var(--gray400)}
+.acc-body{padding:12px 16px;background:var(--gray50);display:none}
+.acc-body.open{display:block}
+.acc-noaplica{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:.73rem;color:#92400e;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+
+/* ── ELEMENT CARD ── */
+.el-card{background:white;border:1.5px solid var(--gray200);border-radius:10px;padding:14px;margin-bottom:10px}
+.el-card.saved{border-color:#bbf7d0}
+.el-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.el-card-name{font-size:.8rem;font-weight:700;color:var(--slate)}
+.el-saved-badge{display:flex;align-items:center;gap:5px;font-size:.65rem;font-weight:700;color:#16a34a;background:#dcfce7;padding:3px 10px;border-radius:20px}
+.el-field-label{font-size:.7rem;font-weight:600;color:var(--gray600);margin-bottom:4px}
+.el-field-label .req{color:var(--red)}
+.el-field-input{width:100%;border:1.5px solid var(--gray200);border-radius:7px;padding:7px 10px;font-size:.75rem;font-family:var(--font);color:var(--slate)}
+.el-field-select{width:100%;border:1.5px solid var(--gray200);border-radius:7px;padding:7px 10px;font-size:.75rem;font-family:var(--font);color:var(--slate);background:white}
+.el-fields-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.el-field{margin-bottom:10px}
+/* Estado B/R/M */
+.estado-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.estado-btn{border-radius:8px;padding:8px 0;font-size:.75rem;font-weight:700;cursor:pointer;border:2px solid;text-align:center;transition:all .15s}
+.estado-btn.b{border-color:#bbf7d0;background:white;color:#16a34a}
+.estado-btn.b.sel{background:#22c55e;border-color:#22c55e;color:white}
+.estado-btn.r{border-color:#fde68a;background:white;color:#b45309}
+.estado-btn.r.sel{background:#f59e0b;border-color:#f59e0b;color:white}
+.estado-btn.m{border-color:#fecaca;background:white;color:#b91c1c}
+.estado-btn.m.sel{background:#ef4444;border-color:#ef4444;color:white}
+/* Save row */
+.el-footer{display:flex;justify-content:flex-end;gap:8px;padding-top:4px}
+.el-btn-save{background:var(--teal);border:none;color:white;border-radius:8px;padding:7px 18px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px}
+.el-btn-clean{background:white;border:1.5px solid #fecaca;color:#b91c1c;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:var(--font)}
+
+/* ── PANEL LATERAL (sidebar mock) ── */
+.side-panel{background:white;border-radius:14px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow);padding:18px}
+.side-cod{font-family:var(--mono);font-size:.72rem;background:var(--teal3);color:var(--teal);border-radius:7px;padding:6px 10px;font-weight:600;margin-bottom:8px;display:inline-block}
+.side-denom{font-size:.92rem;font-weight:700;color:var(--slate);margin-bottom:16px}
+.side-prog-label{font-size:.7rem;font-weight:600;color:var(--gray600);margin-bottom:5px}
+.side-prog-bar{height:8px;background:var(--gray200);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.side-prog-fill{height:100%;background:var(--teal);border-radius:4px}
+.side-prog-text{font-size:.75rem;color:var(--gray400);font-family:var(--mono);margin-bottom:18px}
+.side-back-btn{width:100%;background:var(--gray50);border:1.5px solid var(--gray200);color:var(--gray600);border-radius:8px;padding:8px 0;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--font);text-align:center}
+
+/* ── AREA TABLE ── */
+.area-table{width:100%;border-collapse:collapse;font-size:.75rem}
+.area-table thead tr{background:var(--gray800)}
+.area-table th{padding:8px 12px;text-align:left;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);font-weight:600}
+.area-table td{padding:8px 12px;border-bottom:1px solid var(--gray100);vertical-align:middle}
+.area-table tr:last-child td{border-bottom:none}
+.area-row-head{background:var(--gray800)}
+.area-name{font-weight:700;color:var(--slate)}
+.flag-y{color:#22c55e;font-weight:700}
+.flag-n{color:var(--gray300)}
+.area-section{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.1)}
+
+/* ── FLOW CARDS ── */
+.flow-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fc{background:white;border-radius:12px;border:1.5px solid var(--gray200);padding:18px;text-align:center;box-shadow:var(--shadow);position:relative}
+.fc-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:white;font-size:.75rem;font-weight:800;margin-bottom:12px}
+.fc-icon{font-size:1.5rem;margin-bottom:10px;display:block}
+.fc-title{font-size:.8rem;font-weight:700;color:var(--slate);margin-bottom:5px}
+.fc-desc{font-size:.71rem;color:var(--gray400);line-height:1.55}
+.fc-arr{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--gray300);z-index:1}
+.fc:last-child .fc-arr{display:none}
+
+/* ── CAMPO TOGGLE DEMO ── */
+.campo-demo{background:white;border-radius:12px;border:1.5px solid var(--gray200);overflow:hidden;box-shadow:var(--shadow)}
+.cd-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--gray100)}
+.cd-row:last-child{border-bottom:none}
+.cd-label{font-size:.78rem;font-weight:600;color:var(--slate)}
+.cd-sub{font-size:.68rem;color:var(--gray400);margin-top:1px}
+.cd-on{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;color:#16a34a;background:#dcfce7;padding:3px 10px;border-radius:20px}
+.cd-off{font-size:.7rem;font-weight:600;color:var(--gray300);background:var(--gray100);padding:3px 10px;border-radius:20px}
+
+/* ── SAVE FLOW ── */
+.save-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.sf-card{background:white;border-radius:12px;border:1.5px solid var(--gray200);padding:18px;box-shadow:var(--shadow)}
+.sf-num{width:26px;height:26px;border-radius:50%;background:var(--teal);color:white;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.sf-title{font-size:.82rem;font-weight:700;color:var(--slate);margin-bottom:5px}
+.sf-desc{font-size:.75rem;color:var(--gray600);line-height:1.6}
+
+/* ── AUTO-ADVANCE ── */
+.aa-timeline{display:flex;flex-direction:column;gap:0;margin-bottom:28px}
+.aa-step{display:flex;gap:16px;position:relative}
+.aa-step:not(:last-child)::after{content:'';position:absolute;left:15px;top:38px;bottom:0;width:2px;background:var(--gray200)}
+.aa-icon{flex-shrink:0;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;position:relative;z-index:1}
+.aa-icon.done{background:#dcfce7}
+.aa-icon.auto{background:var(--teal3)}
+.aa-icon.next{background:#eff6ff}
+.aa-icon.warn{background:#fef9c3}
+.aa-body{padding-bottom:20px;flex:1}
+.aa-title{font-size:.85rem;font-weight:700;color:var(--slate);margin-top:5px;margin-bottom:3px}
+.aa-desc{font-size:.78rem;color:var(--gray600);line-height:1.55}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-dot"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
+    <span class="nav-brand-name">TS.<span>Cronos</span> OT</span>
+  </div>
+  <button class="nav-pill active" onclick="goTo(0)">Inicio</button>
+  <button class="nav-pill" onclick="goTo(1)">Lista de ambientes</button>
+  <button class="nav-pill" onclick="goTo(2)">Áreas y elementos</button>
+  <button class="nav-pill" onclick="goTo(3)">Cómo registrar</button>
+  <button class="nav-pill" onclick="goTo(4)">Campos dinámicos</button>
+  <button class="nav-pill" onclick="goTo(5)">Estado B / R / M</button>
+  <button class="nav-pill" onclick="goTo(6)">Guardar por slot</button>
+  <button class="nav-pill" onclick="goTo(7)">Auto-avance y Limpiar</button>
+</nav>
+
+<!-- ══════════════════════ SLIDE 0 — HERO ══════════════════════ -->
+<section class="slide hero-bg active" id="s0" style="position:relative;overflow:hidden">
+  <div style="max-width:54%">
+    <div class="s-tag">Capacitación de usuarios · TS.Cronos OT</div>
+    <h1 class="s-title" style="font-size:clamp(2rem,3.5vw,3rem)">Inventario de Detalles<br><span style="opacity:.7">Fase 2 — Registro físico</span></h1>
+    <p class="s-sub">Aprende a registrar el estado físico de cada ambiente: sus acabados, instalaciones eléctricas y sanitarias, estructuras y mobiliario. El sistema guía el proceso paso a paso.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">📋 27 elementos por ambiente</span>
+      <span class="hero-pill">🏥 5 áreas técnicas</span>
+      <span class="hero-pill">💾 Guardado por slot</span>
+      <span class="hero-pill">📱 Diseño mobile-first</span>
+      <span class="hero-pill">⚡ Auto-avance automático</span>
+    </div>
+  </div>
+
+  <!-- Panel decorativo derecha -->
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:400px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;overflow:hidden;backdrop-filter:blur(8px)">
+    <div style="background:rgba(255,255,255,.1);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.1)">
+      <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35)"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35)"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35)"></div>
+      <span style="font-size:.68rem;color:rgba(255,255,255,.6);font-family:var(--mono);margin-left:4px">Inventario Registro · Fase 2</span>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+      <!-- progress global -->
+      <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:12px">
+        <div style="font-size:.65rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Progreso total</div>
+        <div style="height:7px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;margin-bottom:4px"><div style="width:65%;height:100%;background:#22c55e;border-radius:4px"></div></div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.7);font-family:var(--mono)">18 / 27 completados</div>
+      </div>
+      <!-- areas -->
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.8);font-weight:600">✅ Acabados</span>
+          <span style="font-size:.65rem;background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:20px;font-weight:700">7 / 7</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.8);font-weight:600">⚡ Inst. Eléctricas</span>
+          <span style="font-size:.65rem;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:20px;font-weight:700">3 / 5</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.8);font-weight:600">💧 Inst. Sanitarias</span>
+          <span style="font-size:.65rem;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:20px;font-weight:700">4 / 8</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.8);font-weight:600">🏗️ Estructuras</span>
+          <span style="font-size:.65rem;background:rgba(255,255,255,.15);color:rgba(255,255,255,.5);padding:2px 8px;border-radius:20px;font-weight:700">0 / 5</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.8);font-weight:600">🪑 Mobiliario</span>
+          <span style="font-size:.65rem;background:rgba(255,255,255,.15);color:rgba(255,255,255,.5);padding:2px 8px;border-radius:20px;font-weight:700">0 / 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 1 — LISTA DE AMBIENTES ══════════════════════ -->
+<section class="slide" id="s1">
+  <div class="s-tag">Slide 01</div>
+  <h2 class="s-title">La lista de ambientes</h2>
+  <p class="s-sub">Al ingresar a <strong>Inventario Registro</strong>, ves todos los ambientes de tu IPRESS. Cada fila muestra el avance actual y te permite continuar donde lo dejaste.</p>
+  <div class="two-col">
+    <div>
+      <!-- Mock tabla -->
+      <div class="screen-mock">
+        <div class="sm-topbar">
+          <span>Ambientes — Registro de Inventario</span>
+          <span style="font-size:.68rem;color:rgba(255,255,255,.5)">24 ambiente(s)</span>
+        </div>
+        <div class="sm-filters">
+          <select class="sm-select"><option>Todas las IPRESS</option></select>
+          <input class="sm-search" placeholder="🔍 Buscar por código, denominación o IPRESS..." readonly>
+        </div>
+        <table class="sm-table">
+          <thead><tr>
+            <th>Código de ambiente</th>
+            <th>Denominación</th>
+            <th>IPRESS</th>
+            <th>Progreso</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="sm-code">09100122240001B01A</span></td>
+              <td style="font-size:.72rem;font-weight:600">HALL PÚBLICO 1</td>
+              <td style="font-size:.68rem;color:var(--gray400)">CAP. III CHULUCANAS</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:66%"></div></div><span class="prog-text">25 / 38</span></div></td>
+              <td><span class="badge-prog">En progreso</span></td>
+              <td><button class="sm-btn-mod">✏️ Modificar</button></td>
+            </tr>
+            <tr>
+              <td><span class="sm-code">09100122240001B01B</span></td>
+              <td style="font-size:.72rem;font-weight:600">HALL PÚBLICO 2</td>
+              <td style="font-size:.68rem;color:var(--gray400)">CAP. III CHULUCANAS</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:37%"></div></div><span class="prog-text">14 / 38</span></div></td>
+              <td><span class="badge-prog">En progreso</span></td>
+              <td><button class="sm-btn-mod">✏️ Modificar</button></td>
+            </tr>
+            <tr>
+              <td><span class="sm-code">09100122240001B02A</span></td>
+              <td style="font-size:.72rem;font-weight:600">SALA DE ESPERA 1</td>
+              <td style="font-size:.68rem;color:var(--gray400)">CAP. III CHULUCANAS</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:3%"></div></div><span class="prog-text">0 / 38</span></div></td>
+              <td><span class="badge-pend">Pendiente</span></td>
+              <td><button class="sm-btn-reg">✏️ Registrar</button></td>
+            </tr>
+            <tr>
+              <td><span class="sm-code">09100122240001B02B</span></td>
+              <td style="font-size:.72rem;font-weight:600">SALA DE ESPERA 2</td>
+              <td style="font-size:.68rem;color:var(--gray400)">CAP. III CHULUCANAS</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:100%"></div></div><span class="prog-text">38 / 38</span></div></td>
+              <td><span class="badge-done">Completado</span></td>
+              <td><button class="sm-btn-mod">✏️ Modificar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="callout teal">
+        <div class="callout-icon">📊</div>
+        <div>
+          <h4>Barra de progreso</h4>
+          <p>Muestra cuántos de los <strong>38 elementos</strong> (o los que apliquen al ambiente) ya fueron guardados. Se actualiza en tiempo real cada vez que guardas un slot.</p>
+        </div>
+      </div>
+      <div class="callout amber">
+        <div class="callout-icon">🔘</div>
+        <div>
+          <h4>Estado del ambiente</h4>
+          <p><strong>Pendiente</strong> — no se ha registrado nada todavía.<br><strong>En progreso</strong> — hay avance parcial.<br><strong>Completado</strong> — todos los elementos guardados.</p>
+        </div>
+      </div>
+      <div class="callout green">
+        <div class="callout-icon">↩️</div>
+        <div>
+          <h4>Botón Registrar / Modificar</h4>
+          <p>Si el ambiente no ha sido tocado aparece <strong>Registrar</strong>. Si ya tiene datos parciales o completos, aparece <strong>Modificar</strong> — puedes entrar y corregir cualquier elemento.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 2 — ÁREAS Y ELEMENTOS ══════════════════════ -->
+<section class="slide" id="s2">
+  <div class="s-tag">Slide 02</div>
+  <h2 class="s-title">Las 5 áreas técnicas y 27 elementos</h2>
+  <p class="s-sub">Cada ambiente se evalúa en 5 secciones. Cada sección agrupa los elementos que debes registrar. La tabla muestra qué campos aparecen para cada uno.</p>
+
+  <div style="background:var(--gray800);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-lg)">
+    <table class="area-table" style="width:100%">
+      <thead>
+        <tr>
+          <th style="width:32%">Área / Elemento</th>
+          <th style="text-align:center">Tipo</th>
+          <th style="text-align:center">Cantidad</th>
+          <th style="text-align:center">M²</th>
+          <th style="text-align:center">Ml</th>
+          <th style="text-align:center">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ACABADOS -->
+        <tr style="background:rgba(13,110,122,.35)"><td colspan="6" class="area-section">🎨 Acabados de la Infraestructura — Arquitectura</td></tr>
+        <tr><td class="area-name">Muro</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Zócalo</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Contrazócalo</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Cieloraso / Falso Cieloraso</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Piso</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Ventana</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Puerta</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <!-- ELECTRICAS -->
+        <tr style="background:rgba(37,99,235,.25)"><td colspan="6" class="area-section">⚡ Instalaciones Eléctricas</td></tr>
+        <tr><td class="area-name">Luminaria</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Interruptor</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Tomacorriente</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Sub-tablero / Interruptores</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Red Eléctrica de Distribución</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <!-- SANITARIAS -->
+        <tr style="background:rgba(34,197,94,.15)"><td colspan="6" class="area-section">💧 Instalaciones Sanitarias</td></tr>
+        <tr><td class="area-name">Inodoro / Botadero</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Lavatorio / Lavadero</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-y">✓</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <tr><td class="area-name">Urinario · Grifería · Ducha · Sumidero · Válvulas · Red Agua/Desagüe</td><td style="text-align:center" class="flag-y">✓*</td><td style="text-align:center" class="flag-y">✓*</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-n">—</td><td style="text-align:center" class="flag-y">✓</td></tr>
+        <!-- ESTRUCTURAS -->
+        <tr style="background:rgba(245,158,11,.18)"><td colspan="6" class="area-section">🏗️ Estructuras</td></tr>
+        <tr><td class="area-name" colspan="6" style="color:var(--gray400);font-size:.72rem">Columnas · Vigas · Muro Portante · Losa Aligerada · Losa Maciza — <strong style="color:var(--slate)">Solo Estado de Conservación</strong> (sin Tipo, Cantidad ni Medidas)</td></tr>
+        <!-- MOBILIARIO -->
+        <tr style="background:rgba(124,58,237,.18)"><td colspan="6" class="area-section">🪑 Mobiliario</td></tr>
+        <tr><td class="area-name" colspan="6" style="color:var(--gray400);font-size:.72rem">Mobiliario Clínico · Mobiliario No Clínico — <strong style="color:var(--slate)">Solo Tipo + Estado de Conservación</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.72rem;color:var(--gray400);margin-top:12px">* Red de Agua y Desagüe solo tiene Tipo + Estado, sin Cantidad.</p>
+</section>
+
+<!-- ══════════════════════ SLIDE 3 — CÓMO REGISTRAR ══════════════════════ -->
+<section class="slide" id="s3">
+  <div class="s-tag">Slide 03</div>
+  <h2 class="s-title">Cómo registrar un ambiente</h2>
+  <p class="s-sub">El formulario se organiza en un <strong>accordion</strong> con las 5 áreas técnicas. Trabajas sección por sección, elemento por elemento.</p>
+
+  <div class="two-col-3">
+    <div>
+      <!-- Accordion mock -->
+      <div class="acc-wrap">
+        <!-- ACABADOS — abierta -->
+        <div class="acc-area">
+          <div class="acc-head">
+            <div class="acc-head-left">
+              <div class="acc-area-dot done"></div>
+              <span class="acc-area-title">ACABADOS DE LA INFRA. HOSPITALARIA</span>
+            </div>
+            <span class="acc-badge done">7 / 7 ✓</span>
+          </div>
+        </div>
+        <!-- ELECTRICAS — en progreso, abierta -->
+        <div class="acc-area">
+          <div class="acc-head">
+            <div class="acc-head-left">
+              <div class="acc-area-dot prog"></div>
+              <span class="acc-area-title">INSTALACIONES ELÉCTRICAS</span>
+            </div>
+            <span class="acc-badge prog">3 / 5</span>
+          </div>
+          <div class="acc-body open">
+            <!-- noaplica example -->
+            <div class="acc-noaplica">⚠️ <span><strong>Ningún elemento aplica en esta sección</strong> — si el ambiente no tiene estos elementos, los ítems seguirán en 0/5.</span></div>
+            <!-- Element card — sin guardar -->
+            <div class="el-card">
+              <div class="el-card-head">
+                <span class="el-card-name">Luminaria</span>
+              </div>
+              <div class="el-field">
+                <div class="el-field-label">Tipo <span class="req">*</span></div>
+                <select class="el-field-select"><option>-- Seleccione --</option><option>Fluorescente</option></select>
+              </div>
+              <div class="el-fields-row">
+                <div>
+                  <div class="el-field-label">Cantidad</div>
+                  <input class="el-field-input" type="number" placeholder="0">
+                </div>
+              </div>
+              <div class="el-field-label">Estado de Conservación</div>
+              <div class="estado-btns">
+                <div class="estado-btn b sel">BUENO</div>
+                <div class="estado-btn r">REGULAR</div>
+                <div class="estado-btn m">MALO</div>
+              </div>
+              <div class="el-footer">
+                <button class="el-btn-save">💾 Guardar</button>
+              </div>
+            </div>
+            <!-- Element card — guardado -->
+            <div class="el-card saved">
+              <div class="el-card-head">
+                <span class="el-card-name">Interruptor</span>
+                <span class="el-saved-badge">✓ Guardado</span>
+              </div>
+              <div class="el-fields-row">
+                <div>
+                  <div class="el-field-label">Tipo</div>
+                  <div style="font-size:.75rem;color:var(--teal);font-weight:600;background:var(--teal3);padding:6px 10px;border-radius:7px">Simple</div>
+                </div>
+                <div>
+                  <div class="el-field-label">Cantidad</div>
+                  <div style="font-size:.75rem;color:var(--slate);font-weight:600;background:var(--gray50);padding:6px 10px;border-radius:7px">3</div>
+                </div>
+              </div>
+              <div class="el-footer" style="justify-content:space-between">
+                <button class="el-btn-clean">🗑 Limpiar</button>
+                <button class="el-btn-save">💾 Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- SANITARIAS — pendiente -->
+        <div class="acc-area">
+          <div class="acc-head">
+            <div class="acc-head-left">
+              <div class="acc-area-dot pend"></div>
+              <span class="acc-area-title" style="color:var(--gray400)">INSTALACIONES SANITARIAS</span>
+            </div>
+            <span class="acc-badge pend">0 / 8</span>
+          </div>
+        </div>
+        <!-- ESTRUCTURAS — pendiente -->
+        <div class="acc-area">
+          <div class="acc-head">
+            <div class="acc-head-left">
+              <div class="acc-area-dot pend"></div>
+              <span class="acc-area-title" style="color:var(--gray400)">ESTRUCTURAS</span>
+            </div>
+            <span class="acc-badge pend">0 / 5</span>
+          </div>
+        </div>
+        <div class="acc-area">
+          <div class="acc-head">
+            <div class="acc-head-left">
+              <div class="acc-area-dot pend"></div>
+              <span class="acc-area-title" style="color:var(--gray400)">MOBILIARIO</span>
+            </div>
+            <span class="acc-badge pend">0 / 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Panel lateral -->
+      <div class="side-panel">
+        <span class="side-cod">09100102010001A09A</span>
+        <div class="side-denom">SALA DE ESTERILIZACIÓN</div>
+        <div class="side-prog-label">Progreso Total</div>
+        <div class="side-prog-bar"><div class="side-prog-fill" style="width:39%"></div></div>
+        <div class="side-prog-text">10 / 27 completados</div>
+        <button class="side-back-btn">← Volver a la lista</button>
+      </div>
+      <div class="callout teal">
+        <div class="callout-icon">🎯</div>
+        <div>
+          <h4>Primera sección incompleta se abre sola</h4>
+          <p>Al entrar al ambiente, el sistema detecta automáticamente cuál es la primera sección que aún tiene elementos pendientes y la abre para que empieces ahí de inmediato.</p>
+        </div>
+      </div>
+      <div class="callout blue">
+        <div class="callout-icon">📍</div>
+        <div>
+          <h4>Dot de color = estado visual</h4>
+          <p>🟢 Verde — todos guardados · 🟡 Ámbar — parcialmente completo · ⚪ Gris — sin registrar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 4 — CAMPOS DINÁMICOS ══════════════════════ -->
+<section class="slide" id="s4">
+  <div class="s-tag">Slide 04</div>
+  <h2 class="s-title">Campos dinámicos por elemento</h2>
+  <p class="s-sub">Cada elemento muestra solo los campos que le corresponden. El sistema oculta automáticamente los campos que no aplican — no tienes que preocuparte por eso.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:24px">
+    <!-- CASO 1: Muro (todos los campos) -->
+    <div>
+      <div style="font-size:.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Caso 1 — Muro (todos los campos)</div>
+      <div class="campo-demo">
+        <div class="cd-row">
+          <div><div class="cd-label">Tipo <span style="color:var(--red)">*</span></div><div class="cd-sub">MLB, MDR, ZTP…</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Cantidad</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Cuadrados (M²)</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Lineales (Ml)</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Estado de Conservación</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+      </div>
+    </div>
+    <!-- CASO 2: Contrazócalo (Ml en vez de M2) -->
+    <div>
+      <div style="font-size:.7rem;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Caso 2 — Contrazócalo (usa Ml)</div>
+      <div class="campo-demo">
+        <div class="cd-row">
+          <div><div class="cd-label">Tipo <span style="color:var(--red)">*</span></div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Cantidad</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Cuadrados (M²)</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Lineales (Ml)</div><div class="cd-sub">Solo este elemento</div></div>
+          <span class="cd-on" style="background:#fef9c3;color:#854d0e">✓ Visible</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Estado de Conservación</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+      </div>
+    </div>
+    <!-- CASO 3: Estructuras (solo estado) -->
+    <div>
+      <div style="font-size:.7rem;font-weight:700;color:var(--gray400);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Caso 3 — Columnas (solo estado)</div>
+      <div class="campo-demo">
+        <div class="cd-row">
+          <div><div class="cd-label">Tipo</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Cantidad</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Cuadrados (M²)</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Metros Lineales (Ml)</div></div>
+          <span class="cd-off">Oculto</span>
+        </div>
+        <div class="cd-row">
+          <div><div class="cd-label">Estado de Conservación</div><div class="cd-sub">Único campo requerido</div></div>
+          <span class="cd-on">✓ Visible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <div class="callout teal">
+      <div class="callout-icon">⚙️</div>
+      <div>
+        <h4>Los flags vienen del catálogo</h4>
+        <p>Cada elemento tiene configurados en el sistema sus flags: <em>UsaTipo, UsaCantidad, UsaM², UsaMl, UsaEstado</em>. No se pueden cambiar sin una actualización del catálogo.</p>
+      </div>
+    </div>
+    <div class="callout amber">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h4>Ningún elemento aplica</h4>
+        <p>Si al abrir una sección ves el aviso naranja <em>"Ningún elemento aplica en esta sección"</em>, significa que ese ambiente no tiene esos elementos. Pasa a la siguiente sección.</p>
+      </div>
+    </div>
+    <div class="callout green">
+      <div class="callout-icon">🔤</div>
+      <div>
+        <h4>Campo Tipo = dropdown</h4>
+        <p>Cuando el elemento usa Tipo, verás un desplegable con las opciones configuradas para ese elemento (MLB, MDR, Simple, Fluorescente…). Si no hay opciones, contacta al administrador.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 5 — ESTADO B/R/M ══════════════════════ -->
+<section class="slide" id="s5">
+  <div class="s-tag">Slide 05</div>
+  <h2 class="s-title">Estado de conservación: B / R / M</h2>
+  <p class="s-sub">El estado de conservación se selecciona con 3 botones táctiles grandes. Solo puedes elegir uno. El color indica la condición del elemento evaluado.</p>
+
+  <div class="two-col">
+    <div>
+      <!-- Demo botones -->
+      <div style="background:white;border-radius:14px;border:1.5px solid var(--gray200);padding:24px;box-shadow:var(--shadow);margin-bottom:16px">
+        <div style="font-size:.8rem;font-weight:700;color:var(--slate);margin-bottom:6px">Puerta — Estado de Conservación</div>
+        <div style="font-size:.72rem;color:var(--gray400);margin-bottom:16px">Selecciona el estado actual del elemento</div>
+        <div class="estado-btns" style="max-width:400px">
+          <div class="estado-btn b" style="padding:14px 0;font-size:.82rem">BUENO</div>
+          <div class="estado-btn r sel" style="padding:14px 0;font-size:.82rem">REGULAR</div>
+          <div class="estado-btn m" style="padding:14px 0;font-size:.82rem">MALO</div>
+        </div>
+        <div style="margin-top:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:.75rem;color:#92400e">
+          🟡 <strong>Regular</strong> seleccionado — se guardará el valor "R" en la base de datos.
+        </div>
+      </div>
+      <!-- Variantes visuales -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div style="background:#f0fdf4;border:2px solid #22c55e;border-radius:12px;padding:16px;text-align:center">
+          <div style="font-size:1.4rem;margin-bottom:6px">✅</div>
+          <div style="font-size:.82rem;font-weight:800;color:#16a34a">BUENO</div>
+          <div style="font-size:.7rem;color:#15803d;margin-top:4px">Valor: "B"</div>
+          <div style="font-size:.69rem;color:var(--gray400);margin-top:6px;line-height:1.5">Sin deterioro visible, funciona correctamente</div>
+        </div>
+        <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;padding:16px;text-align:center">
+          <div style="font-size:1.4rem;margin-bottom:6px">⚠️</div>
+          <div style="font-size:.82rem;font-weight:800;color:#b45309">REGULAR</div>
+          <div style="font-size:.7rem;color:#92400e;margin-top:4px">Valor: "R"</div>
+          <div style="font-size:.69rem;color:var(--gray400);margin-top:6px;line-height:1.5">Deterioro leve o parcial, requiere mantenimiento</div>
+        </div>
+        <div style="background:#fef2f2;border:2px solid #ef4444;border-radius:12px;padding:16px;text-align:center">
+          <div style="font-size:1.4rem;margin-bottom:6px">🚨</div>
+          <div style="font-size:.82rem;font-weight:800;color:#b91c1c">MALO</div>
+          <div style="font-size:.7rem;color:#991b1b;margin-top:4px">Valor: "M"</div>
+          <div style="font-size:.69rem;color:var(--gray400);margin-top:6px;line-height:1.5">Deterioro grave o no funcional, requiere reemplazo</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="callout teal">
+        <div class="callout-icon">👆</div>
+        <div>
+          <h4>Botones táctiles grandes</h4>
+          <p>Los botones tienen mínimo 44px de alto para que sean fáciles de tocar desde el celular o tablet. Solo haz tap en el que corresponde — el botón seleccionado se pinta de su color.</p>
+        </div>
+      </div>
+      <div class="callout amber">
+        <div class="callout-icon">💡</div>
+        <div>
+          <h4>Solo un estado a la vez</h4>
+          <p>Al seleccionar REGULAR, los otros dos se desmarcan automáticamente. No puedes dejar el estado vacío si el elemento usa Estado — es un campo requerido antes de guardar.</p>
+        </div>
+      </div>
+      <div class="callout blue">
+        <div class="callout-icon">📋</div>
+        <div>
+          <h4>¿Todos los elementos tienen Estado?</h4>
+          <p>Sí. El campo Estado de Conservación <strong>siempre está presente</strong> para todos los 27 elementos. Es el único campo universal del formulario.</p>
+        </div>
+      </div>
+      <div class="callout violet">
+        <div class="callout-icon">🏗️</div>
+        <div>
+          <h4>Estructuras — solo Estado</h4>
+          <p>Para los 5 elementos de Estructuras (Columnas, Vigas, Muro Portante, Losa Aligerada, Losa Maciza), el único campo que aparece es el Estado B/R/M. No hay Tipo, Cantidad ni Medidas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 6 — GUARDAR POR SLOT ══════════════════════ -->
+<section class="slide" id="s6">
+  <div class="s-tag">Slide 06</div>
+  <h2 class="s-title">Guardar por slot (elemento a elemento)</h2>
+  <p class="s-sub">No hay un botón "Guardar todo". Cada elemento se guarda de forma independiente. Esto protege tu trabajo en caso de pérdida de señal.</p>
+
+  <div class="save-flow" style="margin-bottom:20px">
+    <div class="sf-card">
+      <div class="sf-num">1</div>
+      <div class="sf-title">Llenas los campos del elemento</div>
+      <div class="sf-desc">Seleccionas el Tipo (si aplica), ingresas Cantidad o Medidas (si aplican) y eliges el Estado B/R/M.</div>
+    </div>
+    <div class="sf-card">
+      <div class="sf-num">2</div>
+      <div class="sf-title">Haces click en Guardar</div>
+      <div class="sf-desc">Solo se envía <strong>ese elemento</strong> al servidor. No se afectan los demás. Mientras guarda aparece un spinner en el botón.</div>
+    </div>
+    <div class="sf-card">
+      <div class="sf-num">3</div>
+      <div class="sf-title">El slot queda guardado</div>
+      <div class="sf-desc">La card muestra el badge verde <em>"✓ Guardado"</em>. Los valores quedan visibles como solo-lectura. El contador del área sube en 1.</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div style="font-size:.78rem;font-weight:700;color:var(--slate);margin-bottom:10px">Antes de guardar</div>
+      <div class="el-card" style="margin-bottom:18px">
+        <div class="el-card-head"><span class="el-card-name">Tomacorriente</span></div>
+        <div class="el-field">
+          <div class="el-field-label">Tipo <span class="req">*</span></div>
+          <select class="el-field-select"><option>Simple</option></select>
+        </div>
+        <div class="el-field">
+          <div class="el-field-label">Cantidad</div>
+          <input class="el-field-input" type="number" value="4">
+        </div>
+        <div class="el-field-label">Estado de Conservación</div>
+        <div class="estado-btns" style="max-width:300px">
+          <div class="estado-btn b">BUENO</div>
+          <div class="estado-btn r">REGULAR</div>
+          <div class="estado-btn m sel">MALO</div>
+        </div>
+        <div class="el-footer"><button class="el-btn-save">💾 Guardar</button></div>
+      </div>
+      <div style="font-size:.78rem;font-weight:700;color:#16a34a;margin-bottom:10px">Después de guardar</div>
+      <div class="el-card saved">
+        <div class="el-card-head">
+          <span class="el-card-name">Tomacorriente</span>
+          <span class="el-saved-badge">✓ Guardado</span>
+        </div>
+        <div class="el-fields-row">
+          <div>
+            <div class="el-field-label">Tipo</div>
+            <div style="font-size:.75rem;color:var(--teal);font-weight:600;background:var(--teal3);padding:6px 10px;border-radius:7px">Simple</div>
+          </div>
+          <div>
+            <div class="el-field-label">Cantidad</div>
+            <div style="font-size:.75rem;color:var(--slate);font-weight:600;background:var(--gray50);padding:6px 10px;border-radius:7px">4</div>
+          </div>
+        </div>
+        <div class="el-field-label" style="margin-bottom:6px">Estado</div>
+        <div style="display:inline-block;background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca;border-radius:7px;padding:5px 14px;font-size:.75rem;font-weight:700;margin-bottom:12px">MALO</div>
+        <div class="el-footer" style="justify-content:space-between">
+          <button class="el-btn-clean">🗑 Limpiar</button>
+          <button class="el-btn-save">💾 Guardar</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="callout green">
+        <div class="callout-icon">📶</div>
+        <div>
+          <h4>Protección ante pérdida de señal</h4>
+          <p>Como se guarda slot por slot, si la conexión se corta a mitad de trabajo, <strong>solo pierdes el elemento que estabas guardando en ese momento</strong>. Todo lo anterior ya está en el servidor.</p>
+        </div>
+      </div>
+      <div class="callout teal">
+        <div class="callout-icon">🔄</div>
+        <div>
+          <h4>Upsert — crear o actualizar</h4>
+          <p>Si el elemento ya existía (badge verde), al hacer click en <em>Guardar</em> se <strong>actualiza</strong> el registro. No se crea uno nuevo. El sistema siempre usa la regla "uno por elemento por ambiente".</p>
+        </div>
+      </div>
+      <div class="callout amber">
+        <div class="callout-icon">⚡</div>
+        <div>
+          <h4>El progreso sube en tiempo real</h4>
+          <p>Tanto el contador del área (ej. "4 / 5") como el Progreso Total del panel lateral se actualizan inmediatamente después de cada guardado exitoso.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SLIDE 7 — AUTO-AVANCE Y LIMPIAR ══════════════════════ -->
+<section class="slide" id="s7">
+  <div class="s-tag">Slide 07</div>
+  <h2 class="s-title">Auto-avance y botón Limpiar</h2>
+  <p class="s-sub">Dos comportamientos inteligentes que aceleran el trabajo: el sistema avanza solo al terminar un área, y te permite borrar un elemento si cometiste un error.</p>
+
+  <div class="two-col">
+    <div>
+      <div style="font-size:.82rem;font-weight:700;color:var(--slate);margin-bottom:14px">⚡ Auto-avance automático</div>
+      <div class="aa-timeline">
+        <div class="aa-step">
+          <div class="aa-icon done">✅</div>
+          <div class="aa-body">
+            <div class="aa-title">Guardas el último elemento del área</div>
+            <div class="aa-desc">Al guardar el elemento que faltaba, el contador del área llega a su total (ej. 5/5). El badge cambia de ámbar a verde.</div>
+          </div>
+        </div>
+        <div class="aa-step">
+          <div class="aa-icon auto">🎯</div>
+          <div class="aa-body">
+            <div class="aa-title">La sección se cierra automáticamente</div>
+            <div class="aa-desc">El accordion colapsa la sección que acabas de completar. No necesitas hacer click en ningún lado.</div>
+          </div>
+        </div>
+        <div class="aa-step">
+          <div class="aa-icon next">👇</div>
+          <div class="aa-body">
+            <div class="aa-title">La siguiente sección incompleta se abre</div>
+            <div class="aa-desc">El sistema detecta cuál es la próxima área que tiene elementos pendientes y la expande automáticamente. Puedes continuar de inmediato.</div>
+          </div>
+        </div>
+        <div class="aa-step">
+          <div class="aa-icon warn">🏁</div>
+          <div class="aa-body">
+            <div class="aa-title">Al completar todo el inventario</div>
+            <div class="aa-desc">Cuando todos los elementos de todas las secciones están guardados, el Progreso Total llega al máximo y el estado del ambiente cambia a <strong>Completado</strong> en la lista.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:.82rem;font-weight:700;color:var(--slate);margin-bottom:14px">🗑 Botón Limpiar (DELETE físico)</div>
+      <!-- Mock botón limpiar -->
+      <div style="background:white;border-radius:14px;border:1.5px solid #fecaca;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px">
+        <div style="background:#fef2f2;padding:14px 18px;border-bottom:1px solid #fecaca;display:flex;align-items:center;gap:12px">
+          <div style="width:34px;height:34px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:1rem">🗑</div>
+          <div>
+            <div style="font-size:.85rem;font-weight:700;color:#b91c1c">Limpiar elemento</div>
+            <div style="font-size:.68rem;color:#ef4444">Esta acción no se puede deshacer</div>
+          </div>
+        </div>
+        <div style="padding:16px 18px">
+          <p style="font-size:.8rem;color:var(--gray600);line-height:1.6;margin-bottom:12px">¿Eliminar el registro de <strong style="color:var(--slate)">Interruptor</strong>?<br>El elemento quedará en blanco y podrás registrarlo de nuevo.</p>
+          <div style="display:flex;justify-content:flex-end;gap:8px">
+            <button style="background:white;border:1.5px solid var(--gray200);color:var(--gray600);border-radius:8px;padding:6px 16px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--font)">Cancelar</button>
+            <button style="background:var(--red);border:none;color:white;border-radius:8px;padding:6px 18px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:var(--font)">🗑 Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">⚠️</div>
+        <div>
+          <h4>¿Cuándo usar Limpiar?</h4>
+          <p>Cuando cometiste un error en un elemento ya guardado: tipo incorrecto, cantidad equivocada, estado mal seleccionado. Al limpiar, el slot desaparece de la base de datos — el contador del área baja en 1 y el elemento queda listo para volver a registrarse.</p>
+        </div>
+      </div>
+
+      <div class="callout amber" style="margin-top:12px">
+        <div class="callout-icon">💡</div>
+        <div>
+          <h4>El botón Limpiar solo aparece si ya hay datos</h4>
+          <p>Si el elemento no ha sido guardado nunca, el botón Limpiar está oculto. Solo aparece cuando la card tiene el badge verde <strong>"✓ Guardado"</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CONTROLS ══════════════════════ -->
+<div class="controls">
+  <span class="ctrl-info" id="slideInfo">1 / 8</span>
+  <div class="ctrl-btns">
+    <button class="ctrl-btn" id="btnPrev" onclick="prev()" disabled>← Anterior</button>
+    <button class="ctrl-btn" id="btnNext" onclick="next()">Siguiente →</button>
+  </div>
+  <div class="ctrl-dots" id="dotsCont"></div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const pills  = document.querySelectorAll('.nav-pill');
+let cur = 0;
+
+const dotsEl = document.getElementById('dotsCont');
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'ctrl-dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  d.style.cursor = 'pointer';
+  dotsEl.appendChild(d);
+});
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  pills[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  pills[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  document.getElementById('btnPrev').disabled = cur===0;
+  document.getElementById('btnNext').disabled = cur===slides.length-1;
+  document.getElementById('slideInfo').textContent = `${cur+1} / ${slides.length}`;
+  window.scrollTo(0,0);
+}
+
+function next(){if(cur<slides.length-1)goTo(cur+1)}
+function prev(){if(cur>0)goTo(cur-1)}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+</script>
+</body>
+</html>
